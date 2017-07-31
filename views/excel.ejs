@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <title>导出</title>
+  <script type="text/javascript" src="/javascripts/jquery-3.2.1.min.js"></script>
+</head>
+  <body style="font-family:微软雅黑";   >
+  <button id="exportExcel" class="btn btn-warning">数据导出</button>
+
+
+  </body>
+
+
+</html>
+
+<script>
+    $("#exportExcel").click(function(){
+        console.info("exportExcel");
+        var url =  "/export";
+        window.location = url;
+
+    });
+</script>
