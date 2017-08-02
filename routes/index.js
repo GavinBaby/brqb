@@ -21,16 +21,16 @@ router.get('/export', function(req, res, next) {
     var conf ={};
     conf.cols = [
         {caption:'名称', type:'string'},
-        {caption:'手机号', type:'string', width:'30' },
+        {caption:'手机号', type:'string', width:'20' },
         {caption:'年龄', type:'int'},
-        {caption:'工作单位', type:'string', width:'100' },
+        {caption:'工作单位', type:'string', width:'45' },
         {caption:'职务', type:'string'},
-        {caption:'单位电话', type:'string'},
-        {caption:'芝麻信用分', type:'int'},
-        {caption:'借呗额度', type:'int'},
+        {caption:'单位电话', type:'string', width:'20'},
+   //     {caption:'芝麻信用分', type:'int'},
+    //    {caption:'借呗额度', type:'int'},
         {caption:'信用卡额度', type:'int'},
-        {caption:'QQ', type:'int'},
-	{caption:'录入时间', type:'string'}
+        {caption:'QQ', type:'int', width:'20'},
+	{caption:'录入时间', type:'string', width:'20'}
     ];
 
     user.query().then(function (reply) {
@@ -45,8 +45,8 @@ router.get('/export', function(req, res, next) {
             newrow.push(o.work);
             newrow.push(o.position);
             newrow.push(o.workmobile);
-            newrow.push(o.zmnum);
-            newrow.push(o.jbamount);
+       //     newrow.push(o.zmnum);
+      //      newrow.push(o.jbamount);
             newrow.push(o.cardamount);
             newrow.push(o.qq);
             newrow.push(o.create_time);
@@ -55,7 +55,7 @@ router.get('/export', function(req, res, next) {
 	console.log(conf.rows)
         var result = nodeExcel.execute(conf);
         res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-        res.setHeader("Content-Disposition", "attachment; filename=" + "Report.xlsx");
+        res.setHeader("Content-Disposition", "attachment; filename=" + "客户资料.xlsx");
         res.end(result, 'binary');
     }).catch(function (err) {
         console.log("!"+err.message+"!")
