@@ -22,7 +22,7 @@ router.get('/export', function(req, res, next) {
     conf.cols = [
         {caption:'名称', type:'string'},
         {caption:'手机号', type:'string'},
-        {caption:'年龄', type:'string'},
+        {caption:'年龄', type:'int'},
         {caption:'工作单位', type:'string'},
         {caption:'职务', type:'string'},
         {caption:'单位电话', type:'string'},
@@ -52,7 +52,7 @@ router.get('/export', function(req, res, next) {
             newrow.push(o.create_time);
             conf.rows.push(newrow);
         }
-
+	console.log(conf.rows)
         var result = nodeExcel.execute(conf);
         res.setHeader('Content-Type', 'application/vnd.openxmlformats');
         res.setHeader("Content-Disposition", "attachment; filename=" + "Report.xlsx");
