@@ -21,15 +21,15 @@ router.get('/export', function(req, res, next) {
     var conf ={};
     conf.cols = [
         {caption:'名称', type:'string'},
-        {caption:'手机号', type:'string'},
+        {caption:'手机号', type:'string', width:'30' },
         {caption:'年龄', type:'int'},
-        {caption:'工作单位', type:'string'},
+        {caption:'工作单位', type:'string', width:'100' },
         {caption:'职务', type:'string'},
         {caption:'单位电话', type:'string'},
-        {caption:'芝麻信用分', type:'string'},
-        {caption:'借呗额度', type:'string'},
-        {caption:'信用卡额度', type:'string'},
-        {caption:'QQ', type:'string'},
+        {caption:'芝麻信用分', type:'int'},
+        {caption:'借呗额度', type:'int'},
+        {caption:'信用卡额度', type:'int'},
+        {caption:'QQ', type:'int'},
 	{caption:'录入时间', type:'string'}
     ];
 
