@@ -1,4 +1,4 @@
-var express = require('express');
+﻿var express = require('express');
 var router = express.Router();
 var nodeExcel = require('excel-export');
 var user = require('../models/table').user;
@@ -29,7 +29,8 @@ router.get('/export', function(req, res, next) {
         {caption:'芝麻信用分', type:'string'},
         {caption:'借呗额度', type:'string'},
         {caption:'信用卡额度', type:'string'},
-        {caption:'QQ', type:'string'}
+        {caption:'QQ', type:'string'},
+	{caption:'录入时间', type:'string'}
     ];
 
     user.query().then(function (reply) {
@@ -48,6 +49,7 @@ router.get('/export', function(req, res, next) {
             newrow.push(o.jbamount);
             newrow.push(o.cardamount);
             newrow.push(o.qq);
+            newrow.push(o.create_time);
             conf.rows.push(newrow);
         }
 
