@@ -20,17 +20,17 @@ router.get('/excel', function(req, res, next) {
 router.get('/export', function(req, res, next) {
     var conf ={};
     conf.cols = [
-        {caption:'1', type:'string'},
-        {caption:'2', type:'string', width:'20' },
-        {caption:'3', type:'int'},
-        {caption:'4', type:'string', width:'45' },
-        {caption:'5', type:'string'},
-        {caption:'6', type:'string', width:'20'},
-   //     {caption:'7', type:'int'},
-    //    {caption:'8', type:'int'},
-        {caption:'9', type:'int'},
+        {caption:'名称', type:'string'},
+        {caption:'手机号', type:'string', width:'20' },
+        {caption:'年龄', type:'number'},
+        {caption:'工作单位', type:'string', width:'45' },
+        {caption:'职务', type:'string'},
+        {caption:'单位电话', type:'string', width:'20'},
+         {caption:'芝麻信用分', type:'number'},
+         {caption:'借呗额度', type:'number'},
+        {caption:'信用卡额度', type:'number'},
         {caption:'QQ', type:'int', width:'20'},
-	{caption:'11', type:'string', width:'20'}
+	{caption:'录入时间', type:'string', width:'20'}
     ];
 
     user.query().then(function (reply) {
@@ -45,8 +45,8 @@ router.get('/export', function(req, res, next) {
             newrow.push(o.work);
             newrow.push(o.position);
             newrow.push(o.workmobile);
-       //     newrow.push(o.zmnum);
-      //      newrow.push(o.jbamount);
+            newrow.push(o.zmnum);
+             newrow.push(o.jbamount);
             newrow.push(o.cardamount);
             newrow.push(o.qq);
             newrow.push(o.create_time);
