@@ -29,7 +29,7 @@ router.get('/export', function(req, res, next) {
          {caption:'芝麻信用分', type:'number'},
          {caption:'借呗额度', type:'number'},
         {caption:'信用卡额度', type:'number'},
-        {caption:'QQ', type:'int', width:'20'},
+        {caption:'QQ', type:'number', width:'20'},
 		 {caption:'微信号', type:'string', width:'20'},
 	{caption:'录入时间', type:'string', width:'20'}
     ];
