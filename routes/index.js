@@ -30,6 +30,7 @@ router.get('/export', function(req, res, next) {
          {caption:'借呗额度', type:'number'},
         {caption:'信用卡额度', type:'number'},
         {caption:'QQ', type:'int', width:'20'},
+		 {caption:'微信号', type:'string', width:'20'},
 	{caption:'录入时间', type:'string', width:'20'}
     ];
 
@@ -49,6 +50,7 @@ router.get('/export', function(req, res, next) {
              newrow.push(o.jbamount);
             newrow.push(o.cardamount);
             newrow.push(o.qq);
+			  newrow.push(o.wx);
             newrow.push(o.create_time);
             conf.rows.push(newrow);
         }
