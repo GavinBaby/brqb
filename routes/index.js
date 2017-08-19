@@ -2,9 +2,10 @@
 var router = express.Router();
 var nodeExcel = require('excel-export');
 var user = require('../models/table').user;
+var knex = require('../lib/mysqlClient').knex;
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: '资料填写' });
+  res.render('index', { title: '百瑞钱包，你的私人钱包' });
 });
 router.get('/excel', function(req, res, next) {
     if(req.query.name=="brqb"){
@@ -26,15 +27,17 @@ router.get('/export', function(req, res, next) {
         {caption:'工作单位', type:'string', width:'45' },
         {caption:'职务', type:'string'},
         {caption:'单位电话', type:'string', width:'20'},
-         {caption:'芝麻信用分', type:'number'},
-         {caption:'借呗额度', type:'number'},
+        {caption:'芝麻信用分', type:'number'},
+        {caption:'借呗额度', type:'number'},
         {caption:'信用卡额度', type:'number'},
         {caption:'QQ', type:'number', width:'20'},
-		 {caption:'微信号', type:'string', width:'20'},
-	{caption:'录入时间', type:'string', width:'20'}
+        {caption:'微信号', type:'string', width:'20'},
+	    {caption:'录入时间', type:'string', width:'20'}
     ];
-
-    user.query().then(function (reply) {
+    var begin =req.query.begin||'1000-01-01';
+    var end =req.query.end||'2999-01-01';
+    knex.raw('select * from user where left(create_time,  10) between "' +begin+'" and "'+ end+'"' ).then(function (reply) {
+        reply= reply[0];
         conf.rows = [];
         var o;
         for(var i=0;i<reply.length;i++){
@@ -54,7 +57,6 @@ router.get('/export', function(req, res, next) {
             newrow.push(o.create_time);
             conf.rows.push(newrow);
         }
-	console.log(conf.rows)
         var result = nodeExcel.execute(conf);
         res.setHeader('Content-Type', 'application/vnd.openxmlformats');
         res.setHeader("Content-Disposition", "attachment; filename=" + "khzl.xlsx");
