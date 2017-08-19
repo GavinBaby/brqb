@@ -6,6 +6,9 @@
   <script type="text/javascript" src="/javascripts/jquery-3.2.1.min.js"></script>
 </head>
   <body style="font-family:微软雅黑";   >
+  <label for="meeting">开始日期：</label><input id="begin" type="date" value=""/>
+  <label for="meeting">结束日期：</label><input id="end" type="date" value=""/>
+
   <button id="exportExcel" class="btn btn-warning">数据导出</button>
 
 
@@ -15,9 +18,11 @@
 </html>
 
 <script>
+
     $("#exportExcel").click(function(){
-        console.info("exportExcel");
-        var url =  "/export";
+        var begin =$('#begin').val();
+        var end =$('#end').val();
+        var url =  "/export?begin="+begin+'&end='+end;
         window.location = url;
 
     });
