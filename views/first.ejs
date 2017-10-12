@@ -33,61 +33,14 @@
         </div>
       </div>
 
-      <div class="weui-cell">
-        <div class="weui-cell__hd"><label class="weui-label">年龄</label></div>
-        <div class="weui-cell__bd">
-          <input class="weui-input" type="number"  name="age"  placeholder=""/>
-        </div>
-      </div>
-
-
-    </div>
-    <div class="weui-cells weui-cells_form">
-
-      <div class="weui-cell">
-        <div class="weui-cell__hd"><label class="weui-label">工作单位*</label></div>
-        <div class="weui-cell__bd">
-          <input class="weui-input" type="text"  name="work"  placeholder=""/>
-        </div>
-      </div>
-      <div class="weui-cell">
-        <div class="weui-cell__hd"><label class="weui-label">职务</label></div>
-        <div class="weui-cell__bd">
-          <input class="weui-input" type="text"   name="position" placeholder=""/>
-        </div>
-      </div>
-      <div class="weui-cell">
-        <div class="weui-cell__hd"><label class="weui-label">单位电话*</label></div>
-        <div class="weui-cell__bd">
-          <input class="weui-input" type="number"   name="workmobile" placeholder=""/>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="weui-cells weui-cells_form">
-
+          
       <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">芝麻信用分*</label></div>
         <div class="weui-cell__bd">
           <input class="weui-input" type="number"    name="zmnum" placeholder=""/>
         </div>
       </div>
-      <div class="weui-cell">
-        <div class="weui-cell__hd"><label class="weui-label">借呗额度</label></div>
-        <div class="weui-cell__bd">
-          <input class="weui-input" type="number"    name="jbamount" placeholder=""/>
-        </div>
-      </div>
-      <div class="weui-cell">
-        <div class="weui-cell__hd"><label class="weui-label">信用卡额度</label></div>
-        <div class="weui-cell__bd">
-          <input class="weui-input" type="number"   name="cardamount" placeholder=""/>
-        </div>
-      </div>
-
-    </div>
-    <div class="weui-cells weui-cells_form">
+       
       <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">QQ</label></div>
         <div class="weui-cell__bd">
@@ -96,7 +49,7 @@
       </div>
 
       <div class="weui-cell">
-        <div class="weui-cell__hd"><label class="weui-label">微信号</label></div>
+        <div class="weui-cell__hd"><label class="weui-label">微信号*</label></div>
         <div class="weui-cell__bd">
           <input class="weui-input" type="text"  name="wx" placeholder=""/>
         </div>
@@ -142,7 +95,7 @@
             }, 1000);
             return;
         }
-        if(user.mobile&&user.name&&user.work&&user.workmobile&&user.zmnum){
+        if(user.mobile&&user.name&&user.wx&&user.zmnum){
 
         }else{
             $('#mes').html("请检查必填项！");
