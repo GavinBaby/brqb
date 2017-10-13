@@ -1,10 +1,10 @@
 
 
  
-docker rm -f common
+docker rm -f brqb
 root_path=${PWD}
 echo $root_path
-docker run -d   -v $root_path:/opt/app -w /opt/app -p 3001:3001     --name common google/nodejs
+docker run -d   -v $root_path:/opt/app -w /opt/app -p 80:8080     --name brqb google/nodejs
 
 
-docker cp /etc/localtime common:/etc/localtime
+docker cp /etc/localtime brqb:/etc/localtime
