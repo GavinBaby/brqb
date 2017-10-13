@@ -8,7 +8,12 @@ router.get('/', function(req, res, next) {
     res.render('index', { title: '佰锐钱包，你的私人钱包' });
 });
 router.get('/first', function(req, res, next) {
-  res.render('first', { title: '佰锐钱包，你的私人钱包' });
+	if(req.query.type==1){
+		res.render('first-mobile', { title: '佰锐钱包，你的私人钱包' });
+	}else{
+		res.render('first', { title: '佰锐钱包，你的私人钱包' });
+	}
+		
 });
 router.get('/excel', function(req, res, next) {
     if(req.query.name=="brqb"){

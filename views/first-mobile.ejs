@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/weui/style/weui.min.css"/>
+  <link rel="stylesheet" href="/weui/example/example.css"/>
+  <script type="text/javascript" src="/javascripts/jquery-3.2.1.min.js"></script>
+</head>
+  <body style="font-family:微软雅黑"; ontouchstart >
+  <div class="weui-toptips weui-toptips_warn js_tooltips">错误提示</div>
+
+  <p style="text-align: center">简要填写下面表单，等待审核通过</p>
+
+
+  <p style="text-align: center ;font-size:small">越详尽有效的信息或直接主动联系客服，可有助于优先处理你的申请</p>
+<form id="form">
+
+
+    <div class="weui-cells weui-cells_form" >
+      <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">姓名*</label></div>
+        <div class="weui-cell__bd">
+          <input class="weui-input" type="text"  name="name" placeholder=""  />
+        </div>
+      </div>
+
+      <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">手机号*</label></div>
+        <div class="weui-cell__bd">
+          <input class="weui-input" type="number"  name="mobile"  placeholder=""/>
+        </div>
+      </div>
+
+          
+      <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">手机型号*</label></div>
+        <div class="weui-cell__bd">
+          <input class="weui-input" type="text"    name="mobiletype" placeholder=""/>
+        </div>
+      </div>
+       
+      <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">QQ</label></div>
+        <div class="weui-cell__bd">
+          <input class="weui-input" type="number" pattern="[0-9]*"  name="qq" placeholder=""/>
+        </div>
+      </div>
+
+      <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">微信号*</label></div>
+        <div class="weui-cell__bd">
+          <input class="weui-input" type="text"  name="wx" placeholder=""/>
+        </div>
+      </div>
+    </div>
+</form>
+    <div class="weui-btn-area">
+      <a class="weui-btn weui-btn_primary" href="javascript:"   id="showTooltips" onclick="save()">提交</a>
+    </div>
+
+  <div id="toast" style="display:none">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+      <i class="weui-icon_toast"></i>
+      <p class="weui-toast__content" id="mes">保存成功</p>
+    </div>
+  </div>
+
+  </body>
+
+
+</html>
+
+<script>
+    $.fn.serializeJson = function () {
+        var serializeObj = {};
+        $(this.serializeArray()).each(function () {
+            serializeObj[this.name] = this.value;
+        });
+        return serializeObj;
+    };
+    function save(){
+        var user=  $('form').serializeJson();
+        var tel = user.mobile;
+        //正则表达式
+        var reg = /(1[3-9]\d{9}$)/;
+        if (!reg.test(tel))
+        {
+            $('#mes').html("请输入正确格式的手机号码！");
+            $("#toast").show();
+            window.setTimeout(function () {
+                $("#toast").hide();
+            }, 1000);
+            return;
+        }
+        if(user.mobile&&user.name&&user.wx&&user.mobiletype){
+
+        }else{
+            $('#mes').html("请检查必填项！");
+            $("#toast").show();
+            window.setTimeout(function () {
+                $("#toast").hide();
+            }, 1000);
+            return;
+        }
+        $.ajax({
+            type:"post",
+            url:'/users/saveUser',
+            data:user,
+            success:function (back) {
+                if(back=='1'){
+                    $('#mes').html("提交成功！");
+                    $("#toast").show();
+                    window.setTimeout(function () {
+                        $("#toast").hide();
+                    }, 3000);
+                }else{
+                    $('#mes').html(back);
+                    $("#toast").show();
+                    window.setTimeout(function () {
+                        $("#toast").hide();
+                    }, 1000);
+                    return;
+                }
+            },
+            error:function () {
+                $('#mes').html("提交成功！");
+                $("#toast").show();
+                window.setTimeout(function () {
+                    $("#toast").hide();
+                }, 3000);
+            },
+        })
+    }
+</script>
