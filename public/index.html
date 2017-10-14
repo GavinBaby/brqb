@@ -4,47 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
     <title>佰锐钱包，你的私人钱包</title>
+    <script type="text/javascript" src="/javascripts/jquery-3.2.1.min.js"></script>
     <style>
-        .sel_btn{
-            height: 21px;
-            line-height: 21px;
-            padding: 0 11px;
-            background:  rgba(247, 251, 0, 0.91);
-            border: 1px #ebfa02 solid;
-            border-radius: 3px;
-            /*color: #fff;*/
-            display: inline-block;
-            text-decoration: none;
-            font-size: 12px;
-            outline: none;
+        .bottom_footer {
+            position: fixed; /*or前面的是absolute就可以用*/
+            bottom: 0px;
         }
     </style>
 </head>
-<body  ontouchstart>
+<body   >
+<img id="backimage" src="images/11.png" height="100" width="100" />
 
-    <div style=" "  id="container" width="100%" height="100%">
-        <img style="width:100%; height:225px; background-size:100% 100%;background-repeat:no-repeat;" src="images/2.png"/>
 
-    </div>
-    <div style="width:100%; height:100px;  background-image:url('images/3.png'); background-repeat:no-repeat; background-size:100% 100%; ">
-        <div style="padding-left: 53px; padding-top: 25px;">
-             <label style="font-size:14px;font-weight:bold;margin-top: 3px; ">苹果手机贷 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><a class="sel_btn" href="http://linzhirong.cn/first?type=1">立即申请</a><br>
-             <label style="font-size:8px; margin-top: 3px;">额度1000起</label><br>
-             <label style="font-size:8px; margin-top: 3px;">有Iphone6以上手机即可贷</label>
-         </div>
-    </div>
-
-    <div style="width:100%; height:100px;  background-image:url('images/3.png'); background-repeat:no-repeat; background-size:100% 100%; ">
-        <div  style="padding-left: 53px; padding-top: 25px;">
-            <label style="font-size:14px;font-weight:bold;margin-top: 3px; ">现金信用贷 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><a class="sel_btn" href="http://linzhirong.cn/first?type=2">立即申请</a><br>
-            <label style="font-size:8px; margin-top: 3px;">额度1000起</label><br>
-            <label style="font-size:8px; margin-top: 3px;">有身份证/芝麻分550以上即可贷</label>
-        </div>
-    </div>
+<div class="bottom_footer" id="footer">
+    <div id="left" style="float:left ;  width:50%;  height:100%;" onclick="jump(1)"></div>
+    <div id="right" style="float:left ;  width:50%; height:100%;" onclick="jump(2)"></div>
+</div>
 
 
 
 </body>
 <script type="text/javascript">
+    var winHeight = document.documentElement.clientHeight;
+    var winWidth = document.documentElement.clientWidth;
+$('#backimage').css('height',winHeight);
+$('#backimage').css('width',winWidth);
+    $('#footer').css('height',winHeight/4);
+    $('#footer').css('width',winWidth);
+function jump(type){
+    window.location.href='http://linzhirong.cn/first?type='+type;
+}
 </script>
 </html>
