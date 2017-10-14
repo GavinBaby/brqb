@@ -10,6 +10,9 @@
             position: fixed; /*or前面的是absolute就可以用*/
             bottom: 0px;
         }
+        body{
+            overflow:hidden;
+        }
     </style>
 </head>
 <body   >
@@ -29,6 +32,7 @@
     var winWidth = document.documentElement.clientWidth;
 $('#backimage').css('height',winHeight);
 $('#backimage').css('width',winWidth);
+
     $('#footer').css('height',winHeight/4);
     $('#footer').css('width',winWidth);
 function jump(type){
