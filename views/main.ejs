@@ -1,0 +1,260 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head> 
+     
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
+	 
+  <title>佰锐钱包后台管理系统</title>
+	<link rel="stylesheet" type="text/css" href="/jquery-easyui-1.5/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="/jquery-easyui-1.5/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="/jquery-easyui-1.5/demo/demo.css">
+	<script type="text/javascript" src="/jquery-easyui-1.5/jquery.min.js"></script>
+	<script type="text/javascript" src="/jquery-easyui-1.5/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="/jquery-easyui-1.5/locale/easyui-lang-zh_CN.js"></script>
+
+  </head>
+  
+  <body class="easyui-layout" style="font-family: '微软雅黑';">
+	
+	<!-- E0ECFF -->
+	<div data-options="region:'north',border:false" style="height:60px;background: #aac5e7;padding-top:20px;text-align:center">
+	  <a style="font-size:18px;  float:center;">佰 锐 钱 包 后 台 管 理 系 统</a>
+	   <div id="mm1" style="width:100px; display:none;">
+		<!--<div data-options="iconCls:'icon-edit'" onclick='mod()'>密码修改</div>-->
+		<div data-options="iconCls:'icon-no'" href='/login/exit'>退出</div>
+		</div>
+	  <a  class="easyui-menubutton" style="float:right;margin-right:50px;"  data-options="menu:'#mm1' ">你好</a>
+	  
+	</div>
+	<div data-options="region:'west', split:false,title:''" style="width:155px; border-color: #ddd"  >
+	<div class="easyui-accordion" style="width:150px;height:450px; " id="menu_xys">
+	</div>
+	
+	</div> 
+		<div data-options="region:'center',border:false,title:''">
+			<div id="tabs" class="easyui-tabs" data-options="tools:'#tab-tools'" style=" ">
+			</div>
+		</div>
+		
+	<div id="mm" class="easyui-menu "  style="display:none;">
+		<div id="mm-tabcloseother">关闭其他</div>
+		<div id="mm-tabcloseright">关闭右侧</div>
+		<div id="mm-tabcloseleft">关闭左侧</div>
+		<div id="mm-tabcloseall">关闭全部</div>
+	</div>
+	
+	<div id="w" class="easyui-window" title="密码修改" data-options="iconCls:'icon-save'" minimizable='false' maximizable='false' collapsible='false' closed='true' style="width:500px;height:250px;padding:10px;display:none;">
+		<form id='modpass' action="">
+			<div  style="margin-top:10px;">
+	 			<input class="easyui-passwordbox" id="password" name="password"  prompt="新密码" iconWidth="28" style="width:100%;height:34px;padding:10px" data-options="label:'新密码'">
+				
+			</div>
+			<div style="margin-top:20px;">
+				<input class="easyui-passwordbox"  id="password_s" prompt="确认新密码" iconWidth="28" style="width:100%;height:34px;padding:10px;" data-options="label:'确认新密码'">
+			</div >
+			<div style=" margin-top:20px; text-align:center">
+				<a onclick="modpass()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a onclick="$('#w').window('close')" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">取消</a>
+			</div>			
+		</form>
+	</div>
+	
+</body>
+<script type="text/javascript">
+makemenus();
+		function modpass(){
+			$('#modpass').form('submit', {
+			    url:'./updateUser.do',
+			    onSubmit: function(){
+			    	if($('#password').val().trim()==''){
+			        	$.messager.alert('提示','密码为空','error');
+			        	return false;
+			        }
+			        if($('#password').val()!=$('#password_s').val()){
+			        	$.messager.alert('提示','密码不一致','error');
+			        	return false;
+			        }
+			    },
+			    success:function(data){
+			    	data = JSON.parse(data);
+			    	if(data.back=='1'){
+				    	$.messager.alert('提示','修改成功');
+				        $('#w').window('close');
+			    	}else{
+			    		$.messager.alert('提示','修改失败','error');
+			    	}
+			   		
+			    }
+			});
+		}
+		function mod(){
+				$('#w').window('open');
+		}
+	 
+		$('.easyui-datalist').datalist({'onClickRow':function(a,b){ 
+					addpanel(b.text.replace("&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ",''),b.value);
+			}
+		});
+		function jump(me){
+			var a = $(me).attr('value');
+			alert(a);
+		}
+		
+		var h = $(window).height() -100+'px;';
+		function addpanel(title,url){
+			  if ($('#tabs').tabs('exists', title)){
+					 
+					$('#tabs').tabs('select', title);
+				} else {
+					/* var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>'; */ 
+					url = url+"?p="+Math.random();
+					var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:'+h+'"></iframe>'; 
+					$('#tabs').tabs('add',{
+						title:title,
+						content:content,
+						closable:true
+					});
+				}
+				
+		}
+		
+	function tabClose( ) {
+		/*双击关闭TAB选项卡*/
+		$(".easyui-layout").on('dblclick',".tabs-inner",function(){
+			var subtitle = $(this).children(".tabs-closable").text();
+			$('#tabs').tabs('close',subtitle);
+		});
+		/*为选项卡绑定右键*/
+		$(".easyui-layout").on('contextmenu',".tabs-inner",function(e){
+			e.preventDefault();
+			$('#mm').menu('show', {
+				left: e.pageX,
+				top: e.pageY
+			});
+			var subtitle =$(this).children(".tabs-closable").text();
+			$('#tabs').tabs('select',subtitle);
+		});
+	}		
+	tabCloseEven();
+	tabClose( );
+	//绑定右键菜单事件
+	function tabCloseEven() {
+		//全部关闭
+		$('#mm-tabcloseall').click(function(){
+			$('.tabs-inner span').each(function(i,n){
+				var t = $(n).text();
+				$('#tabs').tabs('close',t);
+				/* if(t != '主页') {
+					$('#tabs').tabs('close',t);
+				} */
+			});
+		});
+		//关闭除当前之外的TAB
+		$('#mm-tabcloseother').click(function(){
+			var prevall = $('.tabs-selected').prevAll();
+			var nextall = $('.tabs-selected').nextAll();		
+			if(prevall.length>0){
+				prevall.each(function(i,n){
+					var t=$('a:eq(0) span',$(n)).text();
+					$('#tabs').tabs('close',t);
+					/* if(t != '主页') {
+						$('#tabs').tabs('close',t);
+					} */
+				});
+			}
+			if(nextall.length>0) {
+				nextall.each(function(i,n){
+					var t=$('a:eq(0) span',$(n)).text();
+						$('#tabs').tabs('close',t);
+					/* if(t != '主页') {
+						$('#tabs').tabs('close',t);
+					} */
+				});
+			}
+		});
+		//关闭当前右侧的TAB
+		$('#mm-tabcloseright').click(function(){
+			var nextall = $('.tabs-selected').nextAll();
+			if(nextall.length==0){
+				//msgShow('系统提示','后边没有啦~~','error');
+			}
+			nextall.each(function(i,n){
+				var t=$('a:eq(0) span',$(n)).text();
+				$('#tabs').tabs('close',t);
+			});
+		});
+		//关闭当前左侧的TAB
+		$('#mm-tabcloseleft').click(function(){
+			var prevall = $('.tabs-selected').prevAll();
+			if(prevall.length==1){
+			}
+			prevall.each(function(i,n){
+				var t=$('a:eq(0) span',$(n)).text();
+				$('#tabs').tabs('close',t);
+				/* if(t != '主页') {
+					$('#tabs').tabs('close',t);
+				} */
+			});
+		});
+	}
+	
+		
+		
+		
+		var content = '<iframe scrolling="auto" frameborder="0"  src="./welcome.html" style="width:100%;height:'+h+'"></iframe>';
+		window.onload =function(){
+			/* $('#tabs').tabs('add',{
+						title:'主页',
+						content:content,
+						closable:true
+					}); */
+					
+			$('#mm').css('display','block');
+			$('#mm1').css('display','block');
+			$('#w').css('display','block');
+		 $('#menu_xys').removeClass('panel-body-noheader') ;
+		$.each($('#menu_xys').find('.panel-body-noheader'), function(index, value, array) {
+		  $(value).removeClass('panel-body-noheader') ;
+		});
+		 	console.log($('#menu_xys').find('.panel-body-noheader').length);
+		};
+		
+	function makemenus(){
+		var menu1='<div    title="&nbsp; 员工管理" data-options="iconCls:\'icon-man\' " style="overflow:auto;   ">'+
+				  '<ul id = "hsz" class="easyui-datalist"  style="border:0"  title=""  >'+
+					'<li value="./page/nurse/blqc-edit.html"  >  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 员工维护</li>'+
+					'<li value="./page/nurse/blqc-search.html">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 客户划分</li> </ul> </div>';
+		var menu2='<div    title="&nbsp; 客户管理" data-options="iconCls:\'icon-bas\'" style="text-align:center">'+
+			  '<ul class="easyui-datalist"    title="" lines="false" style="width:148px;text-align:center;margin-left:50px; ">'+
+//				'<li value="./page/manage/manage-get.html">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 病历签收</li>'+
+				'<li value="/khgl.html">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 客户管理</li> </ul>  </div>';
+//		var menu3='<div  title="&nbsp; 报表数据" data-options="iconCls:\'icon-bb\'" style=" ">'+
+//		 '<ul class="easyui-datalist"    title="" lines="false" style="width:148px;text-align:center;margin-left:50px; ">'+
+//				' <li value="./page/report/report-hsl.html">医疗组回收率报表</li>'+
+//				'<li value="./page/report/report-hsl-ks.html">科室回收率报表</li>'+
+//				'<li value="./page/report/report-borrow.html">借阅统计报表</li>  </ul> </div>';
+//		var menu4='<div  title="&nbsp; 系统" data-options="iconCls:\'icon-sys\'" style=" ">'+
+//		 '<ul class="easyui-datalist"    title="" lines="false" style="width:148px;text-align:center;margin-left:50px; ">'+
+//				'<li value="./page/report/user.html"   >&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 权限管理</li>  </ul> </div>' ;
+		var role= <%= role %>
+			if(role==1){
+                $('#menu_xys').append(menu1+menu2 );
+			}else if (role==2){
+                $('#menu_xys').append(menu2 );
+			}else{
+
+			}
+
+
+		
+	}	
+		
+		
+</script>
+</html>

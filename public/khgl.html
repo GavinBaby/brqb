@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head> 
+	<title> </title>
+	<meta charset="UTF-8"> 
+		<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0"> 
+	<link rel="stylesheet" type="text/css" href="../../jquery-easyui-1.5/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../jquery-easyui-1.5/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../../jquery-easyui-1.5/demo/demo.css">
+	<script type="text/javascript" src="../../jquery-easyui-1.5/jquery.min.js"></script>
+	<script type="text/javascript" src="../../jquery-easyui-1.5/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../../jquery-easyui-1.5/locale/easyui-lang-zh_CN.js"></script>
+
+</head>
+<body  >
+		<div id="out" style="">
+		
+		<table class="easyui-datagrid" title="" style="width:100%;height:100%;" id="dg"
+			data-options=" singleSelect:true,pagination:true,pageList:[20,30,50],pageSize:20,url:'../../kh',method:'get', toolbar:'#tb'">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:45,align:'center'">姓名</th>
+				<th data-options="field:'name',width:145,align:'center'">姓名</th>
+				<th data-options="field:'sex',width:85,align:'center'">性别</th>
+				<th data-options="field:'mobile',width:145,align:'center'">手机号</th>
+				<th data-options="field:'zmnum',width:85,align:'center'">芝麻信用分</th>
+				<th data-options="field:'qq',width:105,align:'center'">qq</th>
+				<th data-options="field:'wx',width:185,align:'center'">微信号</th>
+				<th data-options="field:'mobiletype',width:85,align:'center'">手机型号</th>
+				<th data-options="field:'source',width:85,align:'center'">信息来源</th>
+				<th data-options="field:'create_time',width:145,align:'center'">录入时间</th>
+				<th data-options="field:'remark',width:145,align:'center'">备注</th>
+				<th data-options="field:'jd',width:100,align:'center'">跟踪标识</th>
+			</tr>
+		</thead>
+	</table>
+	</div>
+	 <div id="tb" style="padding:5px 5px;">
+	 <form id='ff'>
+		 录入时间:&nbsp;&nbsp; <input id="begin" name='begin' class="easyui-datebox" style="width:110px">
+			至<input id="end" name='end' class="easyui-datebox" style="width:110px"> &nbsp;&nbsp;
+			姓名:&nbsp;&nbsp;<input name='name' class="easyui-textbox" style="width:120px">&nbsp;&nbsp;
+		 手机号:&nbsp;&nbsp;<input name='mobile' class="easyui-textbox" style="width:120px">&nbsp;&nbsp;
+		 跟踪标识:&nbsp;&nbsp; <select name='state' class="easyui-combobox" panelHeight="auto" style="width:100px">
+				<option value="">全部</option>
+				<option value="0">未借出</option>
+				<option value="1">已借出</option>
+			</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a id="search" style="float:right;margin-right:30px;width:80px;" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+			<a id="reset" style="float:right;margin-right:30px;width:80px;" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+				</form>
+	</div>
+
+</body>
+
+<script type="text/javascript">
+fixWidth(1);
+fixHeight(1);
+function fixWidth(percent){  
+        $('#out').css('width', document.body.clientWidth * percent-10);
+}
+function fixHeight(percent){  
+       $('#out').css('height',$(window).height() * percent-10);
+}
+ $('#search').bind('click', function(){
+     search();
+ });
+ $('#reset').bind('click', function(){
+     $('#ff').form('reset');
+     search();
+ });
+ 
+ 
+function search(){
+ 	var queryArray =$('#ff').serializeArray();
+	var param=getFormJson(queryArray);
+    $('#dg').datagrid('load',param);                                                                                                                                                                     
+}  
+
+function getFormJson(queryArray){
+	 var jsonString= '{';  
+	for (var i = 0; i < queryArray.length; i++) {  
+	    jsonString+= JSON.stringify(queryArray[i].name) + ':' + JSON.stringify(queryArray[i].value) + ',';  
+	}  
+	jsonString= jsonString.substring(0, (jsonString.length - 1));  
+	jsonString+= '}';  
+	return JSON.parse(jsonString);
+}
+
+$('#begin').datebox({
+		onSelect: function(date){
+			var me = date.getFullYear()+"-"+addZero((date.getMonth()+1))+"-"+addZero(date.getDate()) ;
+			var he = $('#end').datebox('getValue')||'9999-12-31';
+			if(me>he){
+				$('#end').datebox('setValue',me);
+			}
+		}
+	});
+	$('#end').datebox({
+		onSelect: function(date){
+			var me = date.getFullYear()+"-"+addZero((date.getMonth()+1))+"-"+addZero(date.getDate()) ;
+			var he = $('#begin').datebox('getValue')||'1000-12-31';
+			if(me<he){
+				$('#begin').datebox('setValue',me);
+			}
+		}
+	});
+	  
+	function addZero(o){
+		return o<10? '0'+o:o;
+	}
+</script>
+</html>

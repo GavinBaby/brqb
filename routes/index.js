@@ -69,4 +69,47 @@ router.get('/export', function(req, res, next) {
 
 });
 
+
+
+router.get('/kh',haslogin, function(req, res, next) {
+    var user =req.session.user;
+
+    var cond=req.query;
+    var begin =req.query.begin||'1000-01-01';
+    var end =req.query.end||'2999-01-01';
+    var sql ='select * from user where left(create_time,  10) between "' +begin+'" and "'+ end+'" ';
+    if(user.role==2){
+        sql=sql+'and belong="'+user.id+'"';
+    }
+    if(cond.name){
+        sql=sql+'and name="'+cond.name+'"';
+    }
+    if(cond.mobile){
+        sql=sql+'and mobile="'+cond.mobile+'"';
+    }
+    if(cond.jd){
+        sql=sql+'and jd="'+cond.jd+'"';
+    }
+
+    knex.raw(sql ).then(function (reply) {
+        // res.send({data:reply,totalsize:reply.length});
+        var data=reply[0];
+        var len =reply[0].length;
+        if(req.query.page ){
+            data=reply[0].splice((req.query.page-1)*req.query.rows, req.query.rows);
+        }
+        res.send({rows:data,total:len});
+    }).catch(function (err) {
+        console.log("!"+err.message+"!")
+        res.send('0');
+    })
+
+});
+function haslogin(req, res, next) {
+    if (req.session&&req.session.user) {
+        return next();
+    } else {
+            res.redirect('/login');
+    }
+};
 module.exports = router;
