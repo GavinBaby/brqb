@@ -9,4 +9,8 @@ table.login = bookshelf.Model.extend({
     tableName: 'login'
 });
 
+table.dic = bookshelf.Model.extend({
+    tableName: 'dic'
+});
+
 module.exports = table;

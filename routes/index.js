@@ -3,6 +3,7 @@ var router = express.Router();
 var nodeExcel = require('excel-export');
 var user = require('../models/table').user;
 var login = require('../models/table').login;
+var dic = require('../models/table').dic;
 var knex = require('../lib/mysqlClient').knex;
 var moment = require('moment');
 router.get('/', function(req, res, next) {
@@ -154,11 +155,23 @@ router.get('/yh',haslogin, function(req, res, next) {
     })
 });
 
+router.get('/yhlist',haslogin, function(req, res, next) {
+    var cond=req.query;
+    var sql ='select name from login where isdeleted=0 and name!="admin"';
+    knex.raw(sql ).then(function (reply) {
+        // res.send({data:reply,totalsize:reply.length});
+        var data=reply[0];
+        res.send( data );
+    }).catch(function (err) {
+        console.log("!"+err.message+"!")
+        res.send('0');
+    })
+});
 router.post('/yhmod',haslogin, function(req, res, next) {
     var body=req.body;
     var sql='';
     if( body.isdeleted==1){
-        sql ='update login set isdeleted=1 where id='+ body.id ;
+        sql ='update login set isdeleted=1 where  name!="admin" and id='+ body.id ;
     }else{
         var cond='';
         if(body.pswd){
@@ -194,6 +207,25 @@ router.post('/yhadd',haslogin, function(req, res, next) {
         res.send({data:0});
     })
 });
+
+
+router.get('/jd',  function(req, res, next) {
+    dic.query().where({id:1}).then(function (reply) {
+        res.send({data:reply[0].value});
+    }).catch(function (err) {
+        console.log("!"+err.message+"!")
+        res.send({data:0});
+    })
+});
+router.post('/jdmod',haslogin, function(req, res, next) {
+    dic.query().update({value:req.body.jd}).where({id:1}).then(function (reply) {
+                res.send({data:1});
+    })  .catch(function (err) {
+        console.log("!"+err.message+"!")
+        res.send({data:0});
+    })
+});
+
 function haslogin(req, res, next) {
     if (req.session&&req.session.user) {
         return next();
