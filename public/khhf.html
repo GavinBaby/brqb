@@ -18,11 +18,13 @@
 		<div id="out" style="">
 		
 		<table class="easyui-datagrid" title="" style="width:100%;height:100%;" id="dg"
-			data-options=" singleSelect:true,pagination:true,pageList:[20,30,50],pageSize:20,url:'../../kh',method:'get', toolbar:'#tb'">
+			data-options=" singleSelect:false,pagination:true,pageList:[20,30,50],pageSize:20,url:'../../kh',method:'get', toolbar:'#tb'">
 		<thead>
 			<tr>
+				<th data-options="field:'ck',checkbox:true"></th>
 				<th data-options="field:'id',width:45,align:'center'">ID</th>
 				<th data-options="field:'name',width:145,align:'center'">姓名</th>
+				<th data-options="field:'belong',width:100,align:'center'">维护人员</th>
 				<th data-options="field:'sex',width:85,align:'center'">性别</th>
 				<th data-options="field:'age',width:85,align:'center'">年龄</th>
 				<th data-options="field:'mobile',width:145,align:'center'">手机号</th>
@@ -33,7 +35,7 @@
 				<th data-options="field:'source',width:85,align:'center'">信息来源</th>
 				<th data-options="field:'create_time',width:145,align:'center'">录入时间</th>
 				<th data-options="field:'remark',width:145,align:'center'">备注</th>
-				<th data-options="field:'jd',width:100,align:'center'">跟踪标识</th>
+
 			</tr>
 		</thead>
 	</table>
@@ -52,10 +54,28 @@
 			</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<a id="search" style="float:right;margin-right:30px;width:80px;" class="easyui-linkbutton" iconCls="icon-search">查询</a>
 			<a id="reset" style="float:right;margin-right:30px;width:80px;" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
-			<a id="export" style="float:right;margin-right:30px;width:80px;" class="easyui-linkbutton" iconCls="icon-redo">导出</a>
+			<a id="hf" style="float:right;margin-right:30px;width:80px;" class="easyui-linkbutton" iconCls="icon-filter">划分</a>
 				</form>
 	</div>
+		<div id="w" class="easyui-window" title="选择员工" data-options="iconCls:'icon-save'" minimizable='false' maximizable='false' collapsible='false' closed='true' style="width:500px;height:250px;padding:10px;display:none;">
+			<form id='modpass' action="">
+					<input class="easyui-combobox"
+								   name="language"
+								   data-options="
+							url:'/yhlist',
+							method:'get',
+							valueField:'name',
+							textField:'name',
+							panelHeight:'auto'
+					">
 
+				<div style=" margin-top:20px; text-align:center">
+					<a onclick="modpass()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<a onclick="$('#w').window('close')" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">取消</a>
+				</div>
+			</form>
+		</div>
 </body>
 
 <script type="text/javascript">
@@ -76,14 +96,17 @@ function fixHeight(percent){
      search();
  });
 
-$("#export").click(function(){
-	var begin = $('#begin').datebox('getValue')||'1000-12-31';
-	var end   = $('#end').datebox('getValue')||'9999-12-31';
-    var source =$('#source').val()||'';
-
-    var url =  "/export?begin="+begin+'&end='+end+'&source='+source;
-    window.location = url;
-
+$("#hf").click(function(){
+	var ids = [];
+	var rows = $('#dg').datagrid('getSelections');
+	for(var i=0; i<rows.length; i++){
+		ids.push(rows[i].id);
+	}
+	if(ids.length==0){
+		$.messager.alert('提示','请选择一条记录','error');
+		return false;
+	}
+	$('#w').window('open');
 });
 function search(){
  	var queryArray =$('#ff').serializeArray();

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head> 
+	<title> </title>
+	<meta charset="UTF-8"> 
+		<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0"> 
+	<script type="text/javascript" src="../../jquery-easyui-1.5/jquery.min.js"></script>
+
+</head>
+<body  >
+
+	<label style="line-height: 20" >跟踪标识: &nbsp;&nbsp;&nbsp;&nbsp;</label><textarea id="jd" rows="5" cols="120"    > </textarea>
+
+<div style=" text-align: center;">
+	<button onclick="addsave()">保存</button>
+</div>
+
+</body>
+
+<script type="text/javascript">
+	$.ajax({
+		type:"get",
+		url:'/jd',
+		success:function(data){
+				$('#jd').val(data.data);
+		}
+	});
+function addsave(){
+
+	var jd=  $('#jd').val();
+	$.ajax({
+		type:"post",
+		url:'/jdmod',
+		data:{jd:jd},
+		success:function(data){
+			if(data.data==1){
+				 alert(  '保存成功');
+			}else{
+				 alert( '保存失败' );
+			}
+		}
+	});
+}
+
+</script>
+</html>
