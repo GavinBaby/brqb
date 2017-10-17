@@ -45,6 +45,7 @@
 		 录入时间:&nbsp;&nbsp; <input id="begin" name='begin' class="easyui-datebox" style="width:110px">
 			至<input id="end" name='end' class="easyui-datebox" style="width:110px"> &nbsp;&nbsp;
 		 信息来源:&nbsp;&nbsp;<input name='source' class="easyui-textbox" style="width:120px">&nbsp;&nbsp;
+
 			<!--姓名:&nbsp;&nbsp;<input name='name' class="easyui-textbox" style="width:120px">&nbsp;&nbsp;
 		 手机号:&nbsp;&nbsp;<input name='mobile' class="easyui-textbox" style="width:120px">&nbsp;&nbsp;
 		 跟踪标识:&nbsp;&nbsp; <select name='state' class="easyui-combobox" panelHeight="auto" style="width:100px">
@@ -58,17 +59,13 @@
 				</form>
 	</div>
 		<div id="w" class="easyui-window" title="选择员工" data-options="iconCls:'icon-save'" minimizable='false' maximizable='false' collapsible='false' closed='true' style="width:500px;height:250px;padding:10px;display:none;">
-			<form id='modpass' action="">
-					<input class="easyui-combobox"
-								   name="language"
-								   data-options="
-							url:'/yhlist',
-							method:'get',
-							valueField:'name',
-							textField:'name',
-							panelHeight:'auto'
-					">
-
+			<!--<input id="dd" class="easyui-combobox" name="dept" width="1000px"
+				   data-options="valueField:'name',textField:'name',url:'/yhlist' ,method:'get'" />-->
+			<form id='' action="">
+				<div  style="margin-top:10px;text-align:center">
+					员工：<select name="belong" id="belong" 　>
+					</select>
+				</div>
 				<div style=" margin-top:20px; text-align:center">
 					<a onclick="modpass()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
