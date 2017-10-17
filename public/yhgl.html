@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head> 
+	<title> </title>
+	<meta charset="UTF-8"> 
+		<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0"> 
+	<link rel="stylesheet" type="text/css" href="../../jquery-easyui-1.5/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../jquery-easyui-1.5/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../../jquery-easyui-1.5/demo/demo.css">
+	<script type="text/javascript" src="../../jquery-easyui-1.5/jquery.min.js"></script>
+	<script type="text/javascript" src="../../jquery-easyui-1.5/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../../jquery-easyui-1.5/locale/easyui-lang-zh_CN.js"></script>
+
+</head>
+<body  >
+		<div id="out" style="">
+		
+		<table class="easyui-datagrid" title="" style="width:100%;height:100%;" id="table_yh"
+			data-options=" singleSelect:true,pagination:true,pageList:[20,30,50],pageSize:20,url:'../../yh',method:'get', toolbar:toolbar">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:45,align:'center'">ID</th>
+				<th data-options="field:'name',width:145,align:'center'">用户名</th>
+				<th data-options="field:'pswd',width:85,align:'center'" formatter ='formatterPs'>密码</th>
+				<th data-options="field:'create_time',width:145,align:'center'">创建时间</th>
+				<th data-options="field:'role_menu',width:85,align:'center'">功能权限</th>
+			</tr>
+		</thead>
+	</table>
+
+			<div id="w" class="easyui-window" title="员工信息修改" data-options="iconCls:'icon-save'" minimizable='false' maximizable='false' collapsible='false' closed='true' style="width:500px;height:250px;padding:10px;display:none;">
+				<form id='modpass' action="">
+					<div  style="margin-top:10px;">
+						<input class="easyui-passwordbox" id="pswd" name="pswd"  prompt="新密码" iconWidth="28" style="width:100%;height:34px;padding:10px" data-options="label:'新密码'">
+					</div>
+					<div  style="margin-top:10px;">
+					  权限:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="role_menu" type="checkbox" value="导出" />导出
+					</div>
+					<div style=" margin-top:20px; text-align:center">
+						<a onclick="modpass()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<a onclick="$('#w').window('close')" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">取消</a>
+					</div>
+				</form>
+			</div>
+			<div id="w_add" class="easyui-window" title="员工新增" data-options="iconCls:'icon-save'" minimizable='false' maximizable='false' collapsible='false' closed='true' style="width:500px;height:290px;padding:10px;display:none;">
+				<form id='addpass' action="">
+					<div  style="margin-top:10px;">
+						<input class="easyui-textbox"  id="name" name="name"  prompt="用户名" iconWidth="28" style="width:100%;height:34px;padding:10px" data-options="label:'用户名'">
+					</div>
+					<div  style="margin-top:10px;">
+						<input class="easyui-passwordbox"   id="pswd1"  name="pswd"  prompt="密码" iconWidth="28" style="width:100%;height:34px;padding:10px" data-options="label:'密码'">
+					</div>
+					<div  style="margin-top:10px;">
+						权限:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="role_menu" type="checkbox" value="导出" />导出
+					</div>
+					<div style=" margin-top:20px; text-align:center">
+						<a onclick="addsave()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<a onclick="$('#w_add').window('close')" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">取消</a>
+					</div>
+				</form>
+			</div>
+</body>
+
+<script type="text/javascript">
+fixWidth(1);
+fixHeight(1);
+
+function formatterPs(value,row,index){
+	return '******';
+}
+var toolbar = [{
+	text:'新增',
+	iconCls:'icon-add',
+	handler:function(){$('#w_add').window('open');}
+},{
+	text:'删除',
+	iconCls:'icon-remove',
+	handler:function(){del()}
+},'-',{
+	text:'修改',
+	iconCls:'icon-ok',
+	handler:function(){mod()}
+}];
+getFun();
+function fixWidth(percent){  
+        $('#out').css('width', document.body.clientWidth * percent-10);
+}
+function fixHeight(percent){  
+       $('#out').css('height',$(window).height() * percent-60);
+}
+ $('#search').bind('click', function(){
+     search();
+ });
+ $('#reset').bind('click', function(){
+     $('#ff').form('reset');
+     search();
+ });
+
+$("#export").click(function(){
+    var begin =$('#begin').val();
+    var end =$('#end').val();
+    var source =$('#source').val()||'';
+    var url =  "/export?begin="+begin+'&end='+end+'&source='+source;
+    window.location = url;
+
+});
+function search(){
+    $('#table_yh').datagrid('load');
+}  
+
+function getFormJson(queryArray){
+	 var jsonString= '{';  
+	for (var i = 0; i < queryArray.length; i++) {  
+	    jsonString+= JSON.stringify(queryArray[i].name) + ':' + JSON.stringify(queryArray[i].value) + ',';  
+	}  
+	jsonString= jsonString.substring(0, (jsonString.length - 1));  
+	jsonString+= '}';  
+	return JSON.parse(jsonString);
+}
+
+$('#begin').datebox({
+		onSelect: function(date){
+			var me = date.getFullYear()+"-"+addZero((date.getMonth()+1))+"-"+addZero(date.getDate()) ;
+			var he = $('#end').datebox('getValue')||'9999-12-31';
+			if(me>he){
+				$('#end').datebox('setValue',me);
+			}
+		}
+	});
+	$('#end').datebox({
+		onSelect: function(date){
+			var me = date.getFullYear()+"-"+addZero((date.getMonth()+1))+"-"+addZero(date.getDate()) ;
+			var he = $('#begin').datebox('getValue')||'1000-12-31';
+			if(me<he){
+				$('#begin').datebox('setValue',me);
+			}
+		}
+	});
+	  
+	function addZero(o){
+		return o<10? '0'+o:o;
+	}
+
+	function getFun(){
+        $.ajax({
+            type: "get",
+            url: "/login/fun",
+            dataType: "json",
+            contentType:"application/json; charset=utf-8",
+            success: function (data) {
+                if(data&&data.canExport){
+                    $('#export').show();
+                }else{
+                    $('#export').hide();
+                }
+            }
+        })
+	}
+var id;
+function mod(){
+	var row = $('#table_yh').datagrid('getSelected');
+	id=row.id;
+	if(!row){
+		$.messager.alert('提示','请选择一条记录','error');
+		return false;
+	}
+	$('#w').window('open');
+}
+
+
+
+function modpass(){
+	if($('#pswd').val().trim()==''){
+		$.messager.alert('提示','密码为空','error');
+		return false;
+	}
+	var user=  $('#modpass').serializeJson();
+	user.id=id;
+	$.ajax({
+		type:"post",
+		url:'/yhmod',
+		data:user,
+		success:function(data){
+			if(data.data==1){
+				$.messager.alert('提示','修改成功');
+
+				$('#w').window('close');
+				search();
+
+			}else{
+				$.messager.alert('提示','修改失败','error');
+			}
+
+		}
+	});
+}
+
+function addsave(){
+	if($('#pswd1').val().trim()==''){
+		$.messager.alert('提示','密码为空','error');
+		return false;
+	}
+	if($('#name').val().trim()==''){
+		$.messager.alert('提示','用户名为空','error');
+		return false;
+	}
+	var user=  $('#addpass').serializeJson();
+	user.id=id;
+	$.ajax({
+		type:"post",
+		url:'/yhadd',
+		data:user,
+		success:function(data){
+			if(data.data==1){
+				$.messager.alert('提示','保存成功');
+
+				$('#w_add').window('close');
+				search();
+
+			}else{
+				$.messager.alert('提示','保存失败','error');
+			}
+
+		}
+	});
+}
+
+function del(){
+	var row = $('#table_yh').datagrid('getSelected');
+	id=row.id;
+	if(!row){
+		$.messager.alert('提示','请选择一条记录','error');
+		return false;
+	}
+var user={id:id,isdeleted:1};
+	$.ajax({
+		type:"post",
+		url:'/yhmod',
+		data:user,
+		success:function(data){
+			if(data.data==1){
+				$.messager.alert('提示','删除成功');
+				search();
+			}else{
+				$.messager.alert('提示','删除失败','error');
+			}
+
+		}
+	});
+}
+$.fn.serializeJson = function () {
+	var serializeObj = {};
+	$(this.serializeArray()).each(function () {
+		serializeObj[this.name] = this.value;
+	});
+	return serializeObj;
+};
+</script>
+</html>

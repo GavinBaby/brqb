@@ -155,6 +155,7 @@
     function save(){
         var user=  $('form').serializeJson();
         var tel = user.mobile;
+        user.source ='信用贷';
         //正则表达式
         var reg = /(1[3-9]\d{9}$)/;
         if (!reg.test(tel))
@@ -197,7 +198,7 @@
                 }
             },
             error:function () {
-                $('#mes').html("提交成功！");
+                $('#mes').html("提交失败！");
                 $("#toast").show();
                 window.setTimeout(function () {
                     $("#toast").hide();

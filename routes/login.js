@@ -40,7 +40,7 @@ router.get('/exit', function (req, res) {
 router.get('/fun', function (req, res) {
     var canExport;
     var user=req.session.user;
-    if(user.role_menu&&user.role_menu.indexOf('1')>=0){
+    if(user.role_menu&&user.role_menu.indexOf('导出')>=0){
         canExport=1
     }else{
         canExport=0;

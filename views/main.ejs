@@ -49,7 +49,7 @@
 	</div>
 	
 	<div id="w" class="easyui-window" title="密码修改" data-options="iconCls:'icon-save'" minimizable='false' maximizable='false' collapsible='false' closed='true' style="width:500px;height:250px;padding:10px;display:none;">
-		<form id='modpass' action="">
+		<form id='modpass' action="" method="post">
 			<div  style="margin-top:10px;">
 	 			<input class="easyui-passwordbox" id="password" name="password"  prompt="新密码" iconWidth="28" style="width:100%;height:34px;padding:10px" data-options="label:'新密码'">
 				
@@ -228,8 +228,9 @@ makemenus();
 	function makemenus(){
 		var menu1='<div    title="&nbsp; 员工管理" data-options="iconCls:\'icon-man\' " style="overflow:auto;   ">'+
 				  '<ul id = "hsz" class="easyui-datalist"  style="border:0"  title=""  >'+
-					'<li value="./page/nurse/blqc-edit.html"  >  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 员工维护</li>'+
-					'<li value="./page/nurse/blqc-search.html">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 客户划分</li> </ul> </div>';
+					'<li value="/yhgl.html"  >  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 员工维护</li>'+
+				'<li value="/khhf.html"  >  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 客户划分</li>'+
+					'<li value="/dic.html">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 基础数据</li> </ul> </div>';
 		var menu2='<div    title="&nbsp; 客户管理" data-options="iconCls:\'icon-bas\'" style="text-align:center">'+
 			  '<ul class="easyui-datalist"    title="" lines="false" style="width:148px;text-align:center;margin-left:50px; ">'+
 //				'<li value="./page/manage/manage-get.html">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 病历签收</li>'+

@@ -2,8 +2,9 @@
 var router = express.Router();
 var nodeExcel = require('excel-export');
 var user = require('../models/table').user;
+var login = require('../models/table').login;
 var knex = require('../lib/mysqlClient').knex;
-/* GET home page. */
+var moment = require('moment');
 router.get('/', function(req, res, next) {
     res.render('index', { title: '佰锐钱包，你的私人钱包' });
 });
@@ -16,7 +17,7 @@ router.get('/first', function(req, res, next) {
 	}
 		
 });
-router.get('/excel', function(req, res, next) {
+router.get('/excel', haslogin,function(req, res, next) {
     if(req.query.name=="brqb"){
         res.render('excel', { title: '数据导出' });
     }else{
@@ -30,17 +31,17 @@ router.get('/excel', function(req, res, next) {
 router.get('/export', haslogin,function(req, res, next) {
     var conf ={};
     conf.cols = [
-        {caption:'名称', type:'string',width:'40' },
-        {caption:'手机号', type:'string', width:'40' },
-        {caption:'芝麻信用分', type:'number',width:'40' },
+        {caption:'名称', type:'string',width:'20' },
+        {caption:'手机号', type:'string', width:'20' },
+        {caption:'芝麻信用分', type:'number',width:'20' },
         {caption:'QQ', type:'number', width:'20'},
-        {caption:'微信号', type:'string', width:'40'},
+        {caption:'微信号', type:'string', width:'20'},
 	    {caption:'录入时间', type:'string', width:'20'},
 	    {caption:'性别', type:'string', width:'20'},
 	    {caption:'年龄', type:'string', width:'20'},
-	    {caption:'备注', type:'string', width:'100'},
-	    {caption:'信息来源', type:'string', width:'100'},
-	    {caption:'跟踪标识', type:'string', width:'100'}
+	    {caption:'备注', type:'string', width:'40'},
+	    {caption:'信息来源', type:'string', width:'40'},
+	    {caption:'跟踪标识', type:'string', width:'40'}
     ];
     var begin =req.query.begin||'1000-01-01';
     var end =req.query.end||'2999-01-01';
@@ -121,6 +122,77 @@ router.get('/kh',haslogin, function(req, res, next) {
         res.send('0');
     })
 
+});
+
+
+router.post('/kh',haslogin, function(req, res, next) {
+    var body=req.body;
+    var sql='';
+    var cond='';
+    user.query().update(body).where(id,body.id ).then(function (reply) {
+        res.send({data:1});
+    }).catch(function (err) {
+        console.log("!"+err.message+"!")
+        res.send({data:0});
+    })
+});
+
+router.get('/yh',haslogin, function(req, res, next) {
+    var cond=req.query;
+    var sql ='select * from login where isdeleted=0 ';
+    knex.raw(sql ).then(function (reply) {
+        // res.send({data:reply,totalsize:reply.length});
+        var data=reply[0];
+        var len =reply[0].length;
+        if(req.query.page ){
+            data=reply[0].splice((req.query.page-1)*req.query.rows, req.query.rows);
+        }
+        res.send({rows:data,total:len});
+    }).catch(function (err) {
+        console.log("!"+err.message+"!")
+        res.send('0');
+    })
+});
+
+router.post('/yhmod',haslogin, function(req, res, next) {
+    var body=req.body;
+    var sql='';
+    if( body.isdeleted==1){
+        sql ='update login set isdeleted=1 where id='+ body.id ;
+    }else{
+        var cond='';
+        if(body.pswd){
+            cond=',pswd="'+body.pswd+'" ';
+        }
+        body.role_menu=body.role_menu||'';
+        sql ='update login set role_menu="'+ body.role_menu+'"'+cond+'  where id='+ body.id ;
+    }
+    knex.raw(sql ).then(function (reply) {
+        // res.send({data:reply,totalsize:reply.length});
+        res.send({data:1});
+    }).catch(function (err) {
+        console.log("!"+err.message+"!")
+        res.send({data:0});
+    })
+});
+
+router.post('/yhadd',haslogin, function(req, res, next) {
+    var body=req.body;
+    login.query().where({name:body.name}).then(function (reply) {
+        if(reply.length>0){
+                res.send({errCode:-1,errText:'用户名已存在'});
+        }else{
+            body.create_time=moment().format('YYYY-MM-DD HH:mm:ss');
+            body.role=2;
+            body.isdeleted=0;
+            login.query().insert(body ).then(function (reply) {
+                res.send({data:1});
+            });
+        }
+    })  .catch(function (err) {
+        console.log("!"+err.message+"!")
+        res.send({data:0});
+    })
 });
 function haslogin(req, res, next) {
     if (req.session&&req.session.user) {
