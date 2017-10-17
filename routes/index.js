@@ -27,21 +27,33 @@ router.get('/excel', function(req, res, next) {
 
 });
 
-router.get('/export', function(req, res, next) {
+router.get('/export', haslogin,function(req, res, next) {
     var conf ={};
     conf.cols = [
-        {caption:'名称', type:'string'},
-        {caption:'手机号', type:'string', width:'20' },
-         
-        {caption:'芝麻信用分', type:'number'},
-        
+        {caption:'名称', type:'string',width:'40' },
+        {caption:'手机号', type:'string', width:'40' },
+        {caption:'芝麻信用分', type:'number',width:'40' },
         {caption:'QQ', type:'number', width:'20'},
-        {caption:'微信号', type:'string', width:'20'},
-	    {caption:'录入时间', type:'string', width:'20'}
+        {caption:'微信号', type:'string', width:'40'},
+	    {caption:'录入时间', type:'string', width:'20'},
+	    {caption:'性别', type:'string', width:'20'},
+	    {caption:'年龄', type:'string', width:'20'},
+	    {caption:'备注', type:'string', width:'100'},
+	    {caption:'信息来源', type:'string', width:'100'},
+	    {caption:'跟踪标识', type:'string', width:'100'}
     ];
     var begin =req.query.begin||'1000-01-01';
     var end =req.query.end||'2999-01-01';
-    knex.raw('select * from user where left(create_time,  10) between "' +begin+'" and "'+ end+'"' ).then(function (reply) {
+    var source =req.query.source||'';
+
+    var sql ='select * from user where left(create_time,  10) between "' +begin+'" and "'+ end+'"';
+    if(req.session.user.role==2){
+        sql =sql+' and belong='+ req.session.user.id;
+    }
+    if(source){
+        sql=sql+' and source='+source;
+    }
+    knex.raw(sql ).then(function (reply) {
         reply= reply[0];
         conf.rows = [];
         var o;
@@ -54,8 +66,13 @@ router.get('/export', function(req, res, next) {
             newrow.push(o.zmnum);
             
             newrow.push(o.qq);
-	    newrow.push(o.wx);
+            newrow.push(o.wx);
             newrow.push(o.create_time);
+            newrow.push(o.sex);
+            newrow.push(o.age);
+            newrow.push(o.remark);
+            newrow.push(o.source);
+            newrow.push(o.jd); //进度
             conf.rows.push(newrow);
         }
         var result = nodeExcel.execute(conf);

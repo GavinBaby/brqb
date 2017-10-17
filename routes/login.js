@@ -24,15 +24,36 @@ router.post('/', function (req, res) {
         res.send('0');
     })
 });
-router.get('/main', function (req, res) {
-    var role=req.query.role;
+router.get('/main',haslogin, function (req, res) {
+    var role=req.session.user.role;
+
     res.render('main',{role:role});
 });
 
 router.get('/exit', function (req, res) {
-    var role=1;
-
-    res.render('login',{role:role});
+    req.session = null;
+    res.render('login' );
 });
 
+
+
+router.get('/fun', function (req, res) {
+    var canExport;
+    var user=req.session.user;
+    if(user.role_menu&&user.role_menu.indexOf('1')>=0){
+        canExport=1
+    }else{
+        canExport=0;
+    }
+    res.send( {canExport:canExport});
+});
+
+
+function haslogin(req, res, next) {
+    if (req.session&&req.session.user) {
+        return next();
+    } else {
+        res.redirect('/login');
+    }
+};
 module.exports = router;
