@@ -55,12 +55,37 @@
 			<a id="export" style="float:right;margin-right:30px;width:80px;" class="easyui-linkbutton" iconCls="icon-redo">导出</a>
 				</form>
 	</div>
-
+		<div id="w_usermod" class="easyui-window" title="客户维护" data-options="iconCls:'icon-save'" minimizable='false' maximizable='false' collapsible='false' closed='true' style="width:500px;height:290px;padding:10px;display:none;">
+			<form id='addpass' action="">
+				<div  style="margin-top:10px;">
+					<input class="easyui-textbox"  id="remark" name="remark"  prompt="备注" iconWidth="28" style="width:100%;height:34px;padding:10px" data-options="label:'备注'">
+				</div>
+				<div  style="margin-top:10px;text-align:center">
+					跟踪标识：<select name="jd" id="jd" 　>
+				</select>
+				</div>
+				<div style=" margin-top:20px; text-align:center">
+					<a onclick="save()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<a onclick="$('#w_usermod').window('close')" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">取消</a>
+				</div>
+			</form>
+		</div>
 </body>
 
 <script type="text/javascript">
 fixWidth(1);
 fixHeight(1);
+var id='';
+$("#dg").datagrid({
+    //双击事件
+    onDblClickRow: function (index, row) {
+		id=row.id;
+		$('#w_usermod').window('open');
+		$('#remark').textbox("setValue", row.remark);
+		$('#jd').val(  row.jd);
+    }
+});
 getFun();
 function fixWidth(percent){  
         $('#out').css('width', document.body.clientWidth * percent-10);
@@ -140,5 +165,46 @@ $('#begin').datebox({
         })
 	}
 
+
+getJd();
+function getJd(){
+	$.ajax({
+		type: "get",
+		url: "/jdlist",
+		dataType: "json",
+		contentType:"application/json; charset=utf-8",
+		success: function (data) {
+			if(data.length>0) {
+				var ht='';
+				for(var i=0;i<data.length;i++){
+					ht+='<option value ="'+data[i]+'">'+data[i]+'</option>';
+				}
+				$('#jd').html(ht);
+			}
+
+		}
+	})
+}
+function  save() {
+	if(!$('#jd').val()){
+		alert('请选择进度');
+		return ;
+	}
+	var user={id:id,jd:$('#jd').val(),remark:$('#remark').val()};
+	$.ajax({
+		type: "post",
+		url: "/kh",
+		data:user,
+		success: function (data) {
+			if(data.data==1){
+				alert(  '保存成功');
+				$('#w_usermod').window('close');
+				search();
+			}else{
+				alert( '保存失败' );
+			}
+		}
+	})
+}
 </script>
 </html>

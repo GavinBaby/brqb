@@ -45,6 +45,7 @@
 		 录入时间:&nbsp;&nbsp; <input id="begin" name='begin' class="easyui-datebox" style="width:110px">
 			至<input id="end" name='end' class="easyui-datebox" style="width:110px"> &nbsp;&nbsp;
 		 信息来源:&nbsp;&nbsp;<input name='source' class="easyui-textbox" style="width:120px">&nbsp;&nbsp;
+
 			<!--姓名:&nbsp;&nbsp;<input name='name' class="easyui-textbox" style="width:120px">&nbsp;&nbsp;
 		 手机号:&nbsp;&nbsp;<input name='mobile' class="easyui-textbox" style="width:120px">&nbsp;&nbsp;
 		 跟踪标识:&nbsp;&nbsp; <select name='state' class="easyui-combobox" panelHeight="auto" style="width:100px">
@@ -58,19 +59,15 @@
 				</form>
 	</div>
 		<div id="w" class="easyui-window" title="选择员工" data-options="iconCls:'icon-save'" minimizable='false' maximizable='false' collapsible='false' closed='true' style="width:500px;height:250px;padding:10px;display:none;">
-			<form id='modpass' action="">
-					<input class="easyui-combobox"
-								   name="language"
-								   data-options="
-							url:'/yhlist',
-							method:'get',
-							valueField:'name',
-							textField:'name',
-							panelHeight:'auto'
-					">
-
+			<!--<input id="dd" class="easyui-combobox" name="dept" width="1000px"
+				   data-options="valueField:'name',textField:'name',url:'/yhlist' ,method:'get'" />-->
+			<form id='' action="">
+				<div  style="margin-top:10px;text-align:center">
+					员工：<select name="belong" id="belong" 　>
+					</select>
+				</div>
 				<div style=" margin-top:20px; text-align:center">
-					<a onclick="modpass()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+					<a onclick="save()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<a onclick="$('#w').window('close')" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">取消</a>
 				</div>
@@ -95,13 +92,14 @@ function fixHeight(percent){
      $('#ff').form('reset');
      search();
  });
-
+var ids  = '';
 $("#hf").click(function(){
-	var ids = [];
+	ids ='';
 	var rows = $('#dg').datagrid('getSelections');
 	for(var i=0; i<rows.length; i++){
-		ids.push(rows[i].id);
+		ids+=rows[i].id+",";
 	}
+	ids=ids.substring(0,ids.length-1);
 	if(ids.length==0){
 		$.messager.alert('提示','请选择一条记录','error');
 		return false;
@@ -162,6 +160,46 @@ $('#begin').datebox({
             }
         })
 	}
+//
+getYh();
+function getYh(){
+	$.ajax({
+		type: "get",
+		url: "/yhlist",
+		dataType: "json",
+		contentType:"application/json; charset=utf-8",
+		success: function (data) {
+			if(data.length>0) {
+				var ht='';
+				for(var i=0;i<data.length;i++){
+					ht+='<option value ="'+data[i].name+'">'+data[i].name+'</option>';
+				}
+			 $('#belong').html(ht);
+			}
 
+		}
+	})
+}
+function  save() {
+	if(!$('#belong').val()){
+		alert('请选择员工');
+		return ;
+	}
+	var user={ids:ids,belong:$('#belong').val()};
+	$.ajax({
+		type: "post",
+		url: "/hfuser",
+		data:user,
+		success: function (data) {
+			if(data.data==1){
+				alert(  '保存成功');
+				$('#w').window('close');
+				search();
+			}else{
+				alert( '保存失败' );
+			}
+		}
+	})
+}
 </script>
 </html>

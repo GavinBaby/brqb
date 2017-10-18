@@ -98,7 +98,7 @@ router.get('/kh',haslogin, function(req, res, next) {
     var end =req.query.end||'2999-01-01';
     var sql ='select * from user where left(create_time,  10) between "' +begin+'" and "'+ end+'" ';
     if(user.role==2){
-        sql=sql+'and belong="'+user.id+'"';
+        sql=sql+'and belong="'+user.name+'"';
     }
     if(cond.name){
         sql=sql+'and name="'+cond.name+'"';
@@ -109,7 +109,9 @@ router.get('/kh',haslogin, function(req, res, next) {
     if(cond.jd){
         sql=sql+'and jd="'+cond.jd+'"';
     }
-
+    if(cond.source){
+        sql=sql+'and source like "%'+cond.source+'%"';
+    }
     knex.raw(sql ).then(function (reply) {
         // res.send({data:reply,totalsize:reply.length});
         var data=reply[0];
@@ -128,9 +130,7 @@ router.get('/kh',haslogin, function(req, res, next) {
 
 router.post('/kh',haslogin, function(req, res, next) {
     var body=req.body;
-    var sql='';
-    var cond='';
-    user.query().update(body).where(id,body.id ).then(function (reply) {
+    user.query().update(body).where({id:body.id}).then(function (reply) {
         res.send({data:1});
     }).catch(function (err) {
         console.log("!"+err.message+"!")
@@ -155,11 +155,9 @@ router.get('/yh',haslogin, function(req, res, next) {
     })
 });
 
-router.get('/yhlist',haslogin, function(req, res, next) {
-    var cond=req.query;
+router.get('/yhlist',  function(req, res, next) {
     var sql ='select name from login where isdeleted=0 and name!="admin"';
     knex.raw(sql ).then(function (reply) {
-        // res.send({data:reply,totalsize:reply.length});
         var data=reply[0];
         res.send( data );
     }).catch(function (err) {
@@ -167,6 +165,19 @@ router.get('/yhlist',haslogin, function(req, res, next) {
         res.send('0');
     })
 });
+
+router.get('/jdlist',  function(req, res, next) {
+    var sql ='select value from dic where code="jd"';
+    knex.raw(sql ).then(function (reply) {
+        var data=reply[0];
+        data = data[0].value.split(',');
+        res.send( data );
+    }).catch(function (err) {
+        console.log("!"+err.message+"!")
+        res.send('0');
+    })
+});
+
 router.post('/yhmod',haslogin, function(req, res, next) {
     var body=req.body;
     var sql='';
@@ -220,6 +231,15 @@ router.get('/jd',  function(req, res, next) {
 router.post('/jdmod',haslogin, function(req, res, next) {
     dic.query().update({value:req.body.jd}).where({id:1}).then(function (reply) {
                 res.send({data:1});
+    })  .catch(function (err) {
+        console.log("!"+err.message+"!")
+        res.send({data:0});
+    })
+});
+
+router.post('/hfuser',haslogin, function(req, res, next) {
+    user.query().update({belong:req.body.belong}).whereRaw( 'id in ('+req.body.ids+')' ).then(function (reply) {
+        res.send({data:1});
     })  .catch(function (err) {
         console.log("!"+err.message+"!")
         res.send({data:0});
