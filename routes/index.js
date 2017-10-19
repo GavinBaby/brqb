@@ -47,10 +47,18 @@ router.get('/export', haslogin,function(req, res, next) {
     var begin =req.query.begin||'1000-01-01';
     var end =req.query.end||'2999-01-01';
     var source =req.query.source||'';
-
+    var user=req.session.user;
     var sql ='select * from user where left(create_time,  10) between "' +begin+'" and "'+ end+'"';
-    if(req.session.user.role==2){
-        sql =sql+' and belong='+ req.session.user.id;
+    if(user.role_menu&&user.role_menu.indexOf('查看所有客户')>=0){
+
+    } else if(user.role==2){
+        sql=sql+'and belong="'+user.name+'"';
+    }
+    if(req.query.name){
+        sql=sql+'and name="'+req.query.name+'"';
+    }
+    if(req.query.belong){
+        sql=sql+'and belong="'+req.query.belong+'"';
     }
     if(source){
         sql=sql+' and source='+source;
