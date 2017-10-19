@@ -98,7 +98,9 @@ router.get('/kh',haslogin, function(req, res, next) {
     var begin =req.query.begin||'1000-01-01';
     var end =req.query.end||'2999-01-01';
     var sql ='select * from user where left(create_time,  10) between "' +begin+'" and "'+ end+'" ';
-    if(user.role==2){
+    if(user.role_menu&&user.role_menu.indexOf('查看所有客户')>=0){
+
+    } else if(user.role==2){
         sql=sql+'and belong="'+user.name+'"';
     }
     if(cond.name){

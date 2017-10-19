@@ -7,7 +7,7 @@ router.get('/', function (req, res) {
         res.render('login' );
 });
 router.post('/', function (req, res) {
-    login.query().where(req.body).then(function (reply) {
+    login.query().where(req.body).andWhere('isdeleted','!=','1').then(function (reply) {
         if(reply.length==1){
             req.session.user=reply[0];
             res.send( {role:reply[0].role});
@@ -40,7 +40,13 @@ router.get('/fun', function (req, res) {
     }else{
         canExport=0;
     }
-    res.send( {canExport:canExport});
+    var canEdit;
+    if(user.role_menu&&user.role_menu.indexOf('客户管理')>=0){
+        canEdit=1
+    }else{
+        canEdit=0;
+    }
+    res.send( {canExport:canExport,canEdit:canEdit});
 });
 
 
