@@ -42,7 +42,8 @@ router.get('/export', haslogin,function(req, res, next) {
 	    {caption:'年龄', type:'string', width:'20'},
 	    {caption:'备注', type:'string', width:'40'},
 	    {caption:'信息来源', type:'string', width:'40'},
-	    {caption:'跟踪标识', type:'string', width:'40'}
+	    {caption:'跟踪标识', type:'string', width:'40'},
+		{caption:'维护人员', type:'string', width:'40'}
     ];
     var begin =req.query.begin||'1000-01-01';
     var end =req.query.end||'2999-01-01';
@@ -75,6 +76,7 @@ router.get('/export', haslogin,function(req, res, next) {
             newrow.push(o.remark);
             newrow.push(o.source);
             newrow.push(o.jd); //进度
+			newrow.push(o.belong); //进度
             conf.rows.push(newrow);
         }
         var result = nodeExcel.execute(conf);

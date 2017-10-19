@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var moment = require('moment');
 var login = require('../models/table').login;
-var session={};
 /* GET users listing. */
 // router.get('/', function(req, res, next) {
 //   res.send('respond with a resource2');
@@ -13,7 +12,6 @@ router.get('/', function (req, res) {
 router.post('/', function (req, res) {
     login.query().where(req.body).then(function (reply) {
         if(reply.length==1){
-            session[reply[0].name]=reply[0];
             req.session.user=reply[0];
             res.send( {role:reply[0].role});
         }else{
