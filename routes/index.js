@@ -7,14 +7,16 @@ var dic = require('../models/table').dic;
 var knex = require('../lib/mysqlClient').knex;
 var moment = require('moment');
 router.get('/', function(req, res, next) {
-    res.render('index', { title: '佰锐钱包，你的私人钱包' });
+    var qudao =req.query.qudao||'';
+    res.render('index', { title: '佰锐钱包，你的私人钱包' ,qudao:qudao });
 });
 router.get('/first', function(req, res, next) {
 	console.log(req.query.type+"@@@@@@@@@@@");
+    var qudao =req.query.qudao||'';
 	if(req.query.type==1){
-		res.render('first-mobile', { title: '佰锐钱包，你的私人钱包' });
+		res.render('first-mobile', { title: '佰锐钱包，你的私人钱包' ,qudao:qudao});
 	}else{
-		res.render('first', { title: '佰锐钱包，你的私人钱包' });
+		res.render('first', { title: '佰锐钱包，你的私人钱包',qudao:qudao });
 	}
 		
 });
