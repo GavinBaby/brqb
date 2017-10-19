@@ -215,7 +215,7 @@ function addsave(){
 		return false;
 	}
 	var user=  $('#addpass').serializeJson();
-	user.id=id;
+	user.id=null;
 	$.ajax({
 		type:"post",
 		url:'/yhadd',
