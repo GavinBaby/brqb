@@ -78,13 +78,19 @@
 fixWidth(1);
 fixHeight(1);
 var id='';
+var canEdit=false;
 $("#dg").datagrid({
     //双击事件
     onDblClickRow: function (index, row) {
-		id=row.id;
-		$('#w_usermod').window('open');
-		$('#remark').textbox("setValue", row.remark);
-		$('#jd').val(  row.jd);
+		if(canEdit){
+			id=row.id;
+			$('#w_usermod').window('open');
+			$('#remark').textbox("setValue", row.remark);
+			$('#jd').val(  row.jd);
+		}else{
+
+		}
+		
     }
 });
 getFun();
@@ -162,6 +168,11 @@ $('#begin').datebox({
                 }else{
                     $('#export').hide();
                 }
+				if(data&&data.canEdit){
+					canEdit=1;
+				}else{
+					canEdit=0;
+				}
             }
         })
 	}

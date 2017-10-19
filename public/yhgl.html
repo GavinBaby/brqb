@@ -36,7 +36,7 @@
 						<input class="easyui-passwordbox" id="pswd" name="pswd"  prompt="新密码" iconWidth="28" style="width:100%;height:34px;padding:10px" data-options="label:'新密码'">
 					</div>
 					<div  style="margin-top:10px;">
-					  权限:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="role_menu" type="checkbox" value="导出" />导出
+						权限:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="role_menu" type="checkbox" value="导出" />导出<input name="role_menu" type="checkbox" value="客户管理" />客户管理<input name="role_menu" type="checkbox" value="查看所有客户" />查看所有客户
 					</div>
 					<div style=" margin-top:20px; text-align:center">
 						<a onclick="modpass()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
@@ -54,7 +54,7 @@
 						<input class="easyui-passwordbox"   id="pswd1"  name="pswd"  prompt="密码" iconWidth="28" style="width:100%;height:34px;padding:10px" data-options="label:'密码'">
 					</div>
 					<div  style="margin-top:10px;">
-						权限:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="role_menu" type="checkbox" value="导出" />导出
+						权限:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="role_menu" type="checkbox" value="导出" />导出<input name="role_menu" type="checkbox" value="客户管理" />客户管理<input name="role_menu" type="checkbox" value="查看所有客户" />查看所有客户
 					</div>
 					<div style=" margin-top:20px; text-align:center">
 						<a onclick="addsave()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
@@ -180,6 +180,12 @@ function modpass(){
 	}
 	var user=  $('#modpass').serializeJson();
 	user.id=id;
+	var obj=document.getElementsByName('role_menu'); //选择所有name="'test'"的对象，返回数组
+	var role_menu='';
+	for(var i=0; i<obj.length; i++){
+		if(obj[i].checked) role_menu+=obj[i].value+','; //如果选中，将value添加到变量s中
+	}
+	user.role_menu=role_menu;
 	$.ajax({
 		type:"post",
 		url:'/yhmod',
