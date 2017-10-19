@@ -38,7 +38,7 @@ router.get('/export', haslogin,function(req, res, next) {
         {caption:'微信号', type:'string', width:'20'},
 	    {caption:'录入时间', type:'string', width:'20'},
 	    {caption:'性别', type:'string', width:'20'},
-	    {caption:'年龄', type:'string', width:'20'},
+	    {caption:'年龄', type:'number', width:'20'},
 	    {caption:'备注', type:'string', width:'40'},
 	    {caption:'信息来源', type:'string', width:'40'},
 	    {caption:'跟踪标识', type:'string', width:'40'},
