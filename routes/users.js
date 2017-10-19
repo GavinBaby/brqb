@@ -26,6 +26,9 @@ router.post('/saveUser', function(req, res, next) {
         if(reply.length>0){
             res.send('手机号已存在');
         }else{
+            if(body.source=='bairui01'){
+                body.source='汇万金';
+            }
             user.query().insert(body) .then(function (reply) {
                 res.send('1');
             }).catch(function (err) {
