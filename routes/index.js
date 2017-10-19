@@ -106,6 +106,9 @@ router.get('/kh',haslogin, function(req, res, next) {
     if(cond.name){
         sql=sql+'and name="'+cond.name+'"';
     }
+    if(cond.belong){
+        sql=sql+'and belong="'+cond.belong+'"';
+    }
     if(cond.mobile){
         sql=sql+'and mobile="'+cond.mobile+'"';
     }
