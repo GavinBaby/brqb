@@ -218,13 +218,14 @@ router.post('/yhmod',haslogin, function(req, res, next) {
 
 router.post('/yhadd',haslogin, function(req, res, next) {
     var body=req.body;
-    login.query().where({name:body.name}).then(function (reply) {
+    login.query().where({name:body.name}).andWhere('isdeleted',0).then(function (reply) {
         if(reply.length>0){
                 res.send({errCode:-1,errText:'用户名已存在'});
         }else{
             body.create_time=moment().format('YYYY-MM-DD HH:mm:ss');
             body.role=2;
             body.isdeleted=0;
+            body.id=null;
             login.query().insert(body ).then(function (reply) {
                 res.send({data:1});
             });

@@ -215,7 +215,6 @@ function addsave(){
 		return false;
 	}
 	var user=  $('#addpass').serializeJson();
-	user.id=null;
 	$.ajax({
 		type:"post",
 		url:'/yhadd',
@@ -228,7 +227,7 @@ function addsave(){
 				search();
 
 			}else{
-				$.messager.alert('提示','保存失败','error');
+				$.messager.alert('提示',data.errText,'error');
 			}
 
 		}
