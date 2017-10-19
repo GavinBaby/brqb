@@ -1,11 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var moment = require('moment');
-var login = require('../models/table').login;
-/* GET users listing. */
-// router.get('/', function(req, res, next) {
-//   res.send('respond with a resource2');
-// });
+var login = require('../models/table').login; 
+
 router.get('/', function (req, res) {
         res.render('login' );
 });

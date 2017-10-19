@@ -27,8 +27,7 @@ router.get('/excel', haslogin,function(req, res, next) {
 
     }
 
-});
-
+}); 
 router.get('/export', haslogin,function(req, res, next) {
     var conf ={};
     conf.cols = [
