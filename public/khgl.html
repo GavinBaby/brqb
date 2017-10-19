@@ -175,7 +175,7 @@ function getJd(){
 		contentType:"application/json; charset=utf-8",
 		success: function (data) {
 			if(data.length>0) {
-				var ht='';
+				var ht='<option value =""></option>';
 				for(var i=0;i<data.length;i++){
 					ht+='<option value ="'+data[i]+'">'+data[i]+'</option>';
 				}
