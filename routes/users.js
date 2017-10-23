@@ -29,6 +29,7 @@ router.post('/saveUser', function(req, res, next) {
             if(body.source=='bairui01'){
                 body.source='汇万金';
             }
+			body.source=body.source||'网页';
             user.query().insert(body) .then(function (reply) {
                 res.send('1');
             }).catch(function (err) {
