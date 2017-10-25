@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>佰锐钱包，你的私人钱包</title>
+    <title><%=title%></title>
     <script type="text/javascript" src="/javascripts/jquery-3.2.1.min.js"></script>
     <style>
         .bottom_footer {
@@ -41,7 +41,8 @@ $('#backimage').css('width',winWidth);
     $('#footer').css('width',winWidth);
 function jump(type){
     var qudao = '<%=qudao%>';
-    window.location.href='http://linzhirong.cn/first?type='+type+'&qudao='+qudao;
+     var title = '<%=title%>';
+    window.location.href='http://linzhirong.cn/first?type='+type+'&qudao='+qudao+'&title='+title;
 }
 </script>
 </html>
