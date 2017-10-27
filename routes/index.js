@@ -81,7 +81,7 @@ router.get('/export', haslogin,function(req, res, next) {
             
             newrow.push(o.qq);
             newrow.push(o.wx);
-			newrow.push(o.mobilephone);
+			newrow.push(o.mobiletype);
             newrow.push(o.create_time);
             newrow.push(o.sex);
             newrow.push(o.age);
