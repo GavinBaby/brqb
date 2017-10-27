@@ -39,6 +39,7 @@ router.get('/export', haslogin,function(req, res, next) {
         {caption:'芝麻信用分', type:'number',width:'20' },
         {caption:'QQ', type:'number', width:'20'},
         {caption:'微信号', type:'string', width:'20'},
+	    {caption:'手机型号', type:'string', width:'20'},
 	    {caption:'录入时间', type:'string', width:'20'},
 	    {caption:'性别', type:'string', width:'20'},
 	    {caption:'年龄', type:'number', width:'20'},
@@ -80,6 +81,7 @@ router.get('/export', haslogin,function(req, res, next) {
             
             newrow.push(o.qq);
             newrow.push(o.wx);
+			newrow.push(o.mobilephone);
             newrow.push(o.create_time);
             newrow.push(o.sex);
             newrow.push(o.age);
