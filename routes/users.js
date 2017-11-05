@@ -50,19 +50,19 @@ router.post('/saveUser', function(req, res, next) {
 
 
 
-// router.get('/',haslogin, function(req, res, next) {
-//     res.writeHead(200, {'content-type': 'text/html;charset=utf-8' });
-//     res.end(
-//         '<form action="/users/upload" enctype="multipart/form-data" method="post">'+
-//         '<input type="file" name="upload" multiple="multiple"> <input type="submit" value="上传">'+
-//         '</form>'
-//     );
-// });
+router.get('/',haslogin, function(req, res, next) {
+    res.writeHead(200, {'content-type': 'text/html;charset=utf-8' });
+    res.end(
+        '<form action="/users/upload" enctype="multipart/form-data" method="post">'+
+        '<input type="file" name="upload" multiple="multiple"> <input type="submit" value="上传">'+
+        '</form>'
+    );
+});
 
 router.post('/upload',haslogin,  function(req, res, next) {
     console.log(" ########## POST /upload ####### ");
     var fileTypeError = false;
-    var target_path =  "/home/brqb/upload";
+    var target_path =  "../upload";
     var form = new formidable.IncomingForm();
     form.encoding = 'utf-8';
     form.keepExtensions = true;
