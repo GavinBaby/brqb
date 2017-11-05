@@ -62,7 +62,9 @@ router.get('/',haslogin, function(req, res, next) {
 router.post('/upload',haslogin,  function(req, res, next) {
     console.log(" ########## POST /upload ####### ");
     var fileTypeError = false;
-    var target_path =  "../upload";
+    var a= process.cwd();
+    console.log(a);
+    var target_path =  "/home/brqb/upload";
     var form = new formidable.IncomingForm();
     form.encoding = 'utf-8';
     form.keepExtensions = true;
@@ -89,6 +91,7 @@ router.post('/upload',haslogin,  function(req, res, next) {
         //遍历上传文件
         var fileName = '';
         var obj = '';
+        console.log(target_path)
         var folder_exists = fs.existsSync(target_path);
         if (folder_exists) {
             var dirList = fs.readdirSync(target_path);
