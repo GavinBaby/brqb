@@ -62,7 +62,7 @@ router.post('/saveUser', function(req, res, next) {
 router.post('/upload',haslogin,  function(req, res, next) {
     console.log(" ########## POST /upload ####### ");
     var fileTypeError = false;
-    var target_path =  "../upload";
+    var target_path =  "/home/brqb/upload";
     var form = new formidable.IncomingForm();
     form.encoding = 'utf-8';
     form.keepExtensions = true;
