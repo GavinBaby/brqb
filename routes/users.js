@@ -50,18 +50,16 @@ router.post('/saveUser', function(req, res, next) {
 
 
 
-router.get('/', function(req, res, next) {
-    res.writeHead(200, {'content-type': 'text/html'});
-    res.end(
-        '<form action="/users/upload" enctype="multipart/form-data" method="post">'+
-        '<input type="text" name="title"><br>'+
-        '<input type="file" name="upload" multiple="multiple"><br>'+
-        '<input type="submit" value="Upload">'+
-        '</form>'
-    );
-});
+// router.get('/',haslogin, function(req, res, next) {
+//     res.writeHead(200, {'content-type': 'text/html;charset=utf-8' });
+//     res.end(
+//         '<form action="/users/upload" enctype="multipart/form-data" method="post">'+
+//         '<input type="file" name="upload" multiple="multiple"> <input type="submit" value="上传">'+
+//         '</form>'
+//     );
+// });
 
-router.post('/upload', function(req, res, next) {
+router.post('/upload',haslogin,  function(req, res, next) {
     console.log(" ########## POST /upload ####### ");
     var fileTypeError = false;
     var target_path =  "../upload";
@@ -151,5 +149,13 @@ router.post('/upload', function(req, res, next) {
     form.parse(req);
 
 });
+
+function haslogin(req, res, next) {
+    if (req.session&&req.session.user) {
+        return next();
+    } else {
+        res.redirect('/login');
+    }
+};
 
 module.exports = router;
